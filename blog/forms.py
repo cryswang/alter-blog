@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post, Experience
+from .models import Post, Experience, Skill
 
 class PostForm(forms.ModelForm):
 

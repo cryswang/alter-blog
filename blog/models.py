@@ -31,3 +31,15 @@ class Experience(models.Model):
     
     def __str__(self):
         return self.company
+
+class Skill(models.Model):
+    title = models.CharField(max_length=200, default="skill")
+    experienced = models.BooleanField(default="False")
+    level = models.IntegerField(default="0")
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+    
+    def __str__(self):
+        return self.title
