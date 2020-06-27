@@ -26,6 +26,7 @@
 
 <br>
 <h3>Experiences.</h3>
+<a href="{% url 'experience_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
         {% for experience in experiences %}
             <div class="exp">
                 <h1>{{ experience.company }}</h1><b style="font-size:45px;font-weight:300;"> /</b>&nbsp;<h2>{{ experience.title }}</h2>
