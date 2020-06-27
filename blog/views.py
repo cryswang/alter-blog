@@ -93,3 +93,15 @@ def project_new(request):
     else:
         form = ProjectForm()
     return render(request, 'blog/project_edit.html', {'form': form})
+
+def project_edit(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.save()
+            return redirect('cv_page')
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'blog/project_edit.html', {'form': form})

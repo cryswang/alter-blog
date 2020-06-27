@@ -12,4 +12,5 @@ urlpatterns = [
     path('cv/experience/<int:pk>/edit', views.experience_edit, name='experience_edit'),
     path('cv/skill/new/', views.skill_new, name='skill_new'),
     path('cv/project/new/', views.project_new, name='project_new'),
+    path('cv/project/<int:pk>/edit', views.project_edit, name='project_edit'),
 ]
