@@ -82,3 +82,14 @@ def skill_new(request):
     else:
         form = SkillsForm()
     return render(request, 'blog/skill_edit.html', {'form': form})
+
+def project_new(request):
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.save()
+            return redirect('cv_page')
+    else:
+        form = ProjectForm()
+    return render(request, 'blog/project_edit.html', {'form': form})
