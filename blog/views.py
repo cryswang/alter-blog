@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404, render
 from .models import Post, Experience, Skill
-from .forms import PostForm, ExperienceForm
+from .forms import PostForm, ExperienceForm, SkillsForm
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -69,3 +69,15 @@ def experience_edit(request, pk):
     else:
         form = ExperienceForm(instance=experience)
     return render(request, 'blog/experience_edit.html', {'form': form})
+
+def skill_new(request):
+    if request.method == "POST":
+        form = SkillsForm(request.POST)
+        if form.is_valid():
+            skill = form.save(commit=False)
+            skill.published_date = timezone.now()
+            skill.save()
+            return redirect('cv_page')
+    else:
+        form = SkillsForm()
+    return render(request, 'blog/skill_edit.html', {'form': form})
