@@ -1,0 +1,39 @@
+{% load static %}
+<html>
+    <head>
+        <title>{ crystal }</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Noto+Sans+JP:wght@500&family=Playfair+Display:wght@600&family=Roboto:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    </head>
+    <body>
+            <div class="page-header">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+                {% endif %}
+                <center>
+                    <div class="shape_1"></div>
+                    <div class="shape_2"></div>
+                    <br>
+                    <h1><a href="/">&nbsp;crystal.</a></h1>
+                    <p>welcome to my blog.</p>
+                    <div class="header_links">
+                        <a href="{% url 'bio_page' %}">bio.</a>
+                        <a href="/">cv.</a>
+                        <a href="/">contact.</a>
+                    </div>
+                </center>
+            </div>
+            <div class="content container">
+                <div class="side-lines">
+                <div class="row">
+
+                    {% block content %}
+                    {% endblock %}
+                    </div>
+                </div>
+                </div>
+
+        </body>
+</html>
