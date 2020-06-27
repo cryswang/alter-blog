@@ -8,4 +8,5 @@ urlpatterns = [
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('bio', views.bio_page, name='bio_page'),
     path('cv', views.cv_page, name='cv_page'),
+    path('cv/experience/new/', views.experience_new, name='experience_new'),
 ]

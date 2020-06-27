@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404, render
 from .models import Post, Experience
-from .forms import PostForm
+from .forms import PostForm, ExperienceForm
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -44,3 +44,15 @@ def bio_page(request):
 def cv_page(request):
     experiences = Experience.objects.order_by('published_date')
     return render(request, 'blog/cv_page.html', {'experiences': experiences})
+
+def experience_new(request):
+    if request.method == "POST":
+        form = ExperienceForm(request.POST)
+        if form.is_valid():
+            experience = form.save(commit=False)
+            experience.published_date = timezone.now()
+            experience.save()
+            return redirect('cv_page')
+    else:
+        form = ExperienceForm()
+    return render(request, 'blog/experience_edit.html', {'form': form})

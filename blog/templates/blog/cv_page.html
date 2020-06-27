@@ -4,13 +4,33 @@
 <div class="cv_page">
 
 <h3>Education.</h3>
+<div class="edu">
+        <h1>University of Maryland, College Park</h1>
+        <div class="accent_line"></div>
+        <br>
+        <div class="desc">
+             <p>Currently pursuing a <b>B.S. in Computer Science </b>
+             <p>with a <b>Creative Writing Minor</b> and an alumni of the</p>
+             <p><i>Advanced Cybersecurity Experience for Students</i></p>
+             <p>Honors College, also known as <b>ACES</b>.</p>
+        </div>
+        <div class="additional_info">
+            <center>
+                <h2>gpa</h2>
+                <p>3.6 / 4.0</p>
+                <h2>grad. date</h2>
+                <p>may 2021</p>
+            </center>
+        </div>
+    </div>
+
 <br>
 <h3>Experiences.</h3>
+{% if user.is_authenticated %}
+<a href="{% url 'experience_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+{% endif %}
         {% for experience in experiences %}
             <div class="exp">
-                {% if user.is_authenticated %}
-                <a class="btn btn-default" href="{% url 'experience_edit' pk=experience.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-                {% endif %}
                 <h1>{{ experience.company }}</h1><b style="font-size:45px;font-weight:300;"> /</b>&nbsp;<h2>{{ experience.title }}</h2>
                 <br>
                 <div class="accent_line"></div>
