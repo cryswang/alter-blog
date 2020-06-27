@@ -44,7 +44,7 @@ def bio_page(request):
 def cv_page(request):
     experiences = Experience.objects.order_by('published_date')
     skills = Skill.objects.order_by('level')
-    return render(request, 'blog/cv_page.html', {'experiences': experiences})
+    return render(request, 'blog/cv_page.html', {'experiences': experiences, 'skills':skills})
 
 def experience_new(request):
     if request.method == "POST":
