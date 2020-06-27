@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404, render
-from .models import Post
+from .models import Post, Experience
 from .forms import PostForm
 
 def post_list(request):
@@ -40,3 +40,7 @@ def post_edit(request, pk):
 
 def bio_page(request):
     return render(request, 'blog/bio_page.html')
+
+def cv_page(request):
+    experiences = Experience.objects.order_by('published_date')
+    return render(request, 'blog/cv_page.html', {'experiences': experiences})

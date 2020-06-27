@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post
+from .models import Post, Experience
 
 class PostForm(forms.ModelForm):
 

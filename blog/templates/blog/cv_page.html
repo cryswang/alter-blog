@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="cv_page">
+
+<h3>Education.</h3>
+<br>
+<h3>Experiences.</h3>
+        {% for experience in experiences %}
+            <div class="exp">
+                {% if user.is_authenticated %}
+                <a class="btn btn-default" href="{% url 'experience_edit' pk=experience.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                {% endif %}
+                <h1>{{ experience.company }}</h1><b style="font-size:45px;font-weight:300;"> /</b>&nbsp;<h2>{{ experience.title }}</h2>
+                <br>
+                <div class="accent_line"></div>
+                <br>
+                <div class="desc">
+                    <p>{{ experience.description | safe | linebreaksbr}}</p>
+                </div>
+                <div class="additional_info">
+                        <center>
+                        <h4 style="margin-top:40px;">when?</h4>
+                        <p><b>{{ experience.work_period }}</b></p>
+                             <br>
+                        <h4>where?</h4>
+                        <p><b>{{ experience.location }}</b></p>
+                    </center>
+                    </div>
+            </div>
+        {% endfor %}
+
+</div>
+{% endblock %}
