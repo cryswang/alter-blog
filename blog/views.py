@@ -56,3 +56,15 @@ def experience_new(request):
     else:
         form = ExperienceForm()
     return render(request, 'blog/experience_edit.html', {'form': form})
+
+def experience_edit(request, pk):
+    experience = get_object_or_404(Experience, pk=pk)
+    if request.method == "POST":
+        form = ExperienceForm(request.POST, instance=experience)
+        if form.is_valid():
+            experience = form.save(commit=False)
+            experience.save()
+            return redirect('cv_page')
+    else:
+        form = ExperienceForm(instance=experience)
+    return render(request, 'blog/experience_edit.html', {'form': form})

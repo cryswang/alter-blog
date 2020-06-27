@@ -29,6 +29,7 @@
 <a href="{% url 'experience_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
         {% for experience in experiences %}
             <div class="exp">
+                <a class="btn btn-default" href="{% url 'experience_edit' pk=experience.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                 <h1>{{ experience.company }}</h1><b style="font-size:45px;font-weight:300;"> /</b>&nbsp;<h2>{{ experience.title }}</h2>
                 <br>
                 <div class="accent_line"></div>
