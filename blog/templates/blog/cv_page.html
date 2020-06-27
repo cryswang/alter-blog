@@ -53,6 +53,15 @@
             </div>
         {% endfor %}
     <br>
+        <h3>Projects.</h3>
+        {% for project in projects %}
+            <div class="projects">
+                <h1>{{ project.title }}</h1>
+                <p>{{ project.work_period }}</p>
+                <p>{{ project.description | safe | linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+    <br>
     <h3>Skills.</h3>
     {% if user.is_authenticated %}
     <a href="{% url 'skill_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
