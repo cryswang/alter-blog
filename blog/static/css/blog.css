@@ -457,20 +457,19 @@ h2, h2 a {
 }
 
 .involvement {
-    margin-bottom: 50px;
-    margin-top:20px;
-    padding: 0 30px 10px 30px;
+    margin-bottom: 60px;
+    margin-top:45px;
+    padding: 10px 30px 10px 30px;
     width: 900px;
     height:fit-content;
-    border-bottom:2px solid black;
-    border-right:2px solid black;
-    border-radius: 10px 0px;
+    border:2px solid black;
+    border-radius: 10px 10px;
     transition: 1s;
 }
 
 .involvement h1 {
     font-weight:600;
-    margin-bottom:-3px;
+    margin-bottom:-2px;
 }
 
 .involvement h2{
