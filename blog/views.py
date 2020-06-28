@@ -117,3 +117,15 @@ def involvement_new(request):
     else:
         form = InvolvementForm()
     return render(request, 'blog/involvement_edit.html', {'form': form})
+
+def involvement_edit(request, pk):
+    involvement = get_object_or_404(Involvement, pk=pk)
+    if request.method == "POST":
+        form = InvolvementForm(request.POST, instance=involvement)
+        if form.is_valid():
+            involvement = form.save(commit=False)
+            involvement.save()
+            return redirect('cv_page')
+    else:
+        form = InvolvementForm(instance=involvement)
+    return render(request, 'blog/involvement_edit.html', {'form': form})
