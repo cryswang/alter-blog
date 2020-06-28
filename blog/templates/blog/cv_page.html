@@ -85,6 +85,9 @@
         </center>
     <br>
     <h3>Involvement.</h3>
+    {% if user.is_authenticated %}
+    <a href="{% url 'involvement_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+    {% endif %}
     {% for involvement in involvements %}
         <div class="involvement">
                 <h1>{{ involvement.name }}</h1>

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404, render
 from .models import Post, Experience, Skill, Project, Involvement
-from .forms import PostForm, ExperienceForm, SkillsForm, ProjectForm
+from .forms import PostForm, ExperienceForm, SkillsForm, ProjectForm, InvolvementForm
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -106,3 +106,14 @@ def project_edit(request, pk):
     else:
         form = ProjectForm(instance=project)
     return render(request, 'blog/project_edit.html', {'form': form})
+
+def involvement_new(request):
+    if request.method == "POST":
+        form = InvolvementForm(request.POST)
+        if form.is_valid():
+            involvement = form.save(commit=False)
+            involvement.save()
+            return redirect('cv_page')
+    else:
+        form = InvolvementForm()
+    return render(request, 'blog/involvement_edit.html', {'form': form})

@@ -13,4 +13,5 @@ urlpatterns = [
     path('cv/skill/new/', views.skill_new, name='skill_new'),
     path('cv/project/new/', views.project_new, name='project_new'),
     path('cv/project/<int:pk>/edit', views.project_edit, name='project_edit'),
+    path('cv/involvement/new/', views.involvement_new, name='involvement_new'),
 ]
