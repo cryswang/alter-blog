@@ -22,6 +22,7 @@ li{
 
 .post h1, h1 a, h1 a:visited {
     font-family: 'Playfair Display', serif;
+    font-weight:600;
     color: black;
     text-decoration-line: underline;
     font-size: 43px;
@@ -651,15 +652,18 @@ h2, h2 a {
     margin-right:-52%;
 }
 
-.post h2 a, .post h2 a:visited {
-    color: #333;
+.post_detail h2 {
+    color: white;
+    background-image:linear-gradient(to top right, #C25100, rgb(243, 199, 76));
+    width:fit-content;
+    padding:8px 12px;
+    border-radius:15px;
 }
 
 .post_detail .post{
     width:800px;
-    box-shadow: none;
     border:none;
-    border:1px solid black;
+    border:2px solid black;
     margin-left: 90px;
     margin-top: 50px;
 }
