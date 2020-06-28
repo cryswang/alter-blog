@@ -63,8 +63,11 @@
                     <a class="btn btn-default" href="{% url 'project_edit' pk=project.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                 {% endif %}
                 <h1>{{ project.title }}</h1>
-                <p>{{ project.work_period }}</p>
-                <p>{{ project.description | safe | linebreaksbr }}</p>
+                <h2>{{ project.work_period }}</h2>
+                <div class="accent_line"></div>
+                <div class="desc">
+                    <p>{{ project.description | safe | linebreaksbr }}</p>
+                </div>
             </div>
         {% endfor %}
     <br>
