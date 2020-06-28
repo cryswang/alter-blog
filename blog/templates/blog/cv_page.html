@@ -83,6 +83,16 @@
             {% endfor %}
         </div>
         </center>
+    <br>
+    <h3>Involvement.</h3>
+    {% for involvement in involvements %}
+        <div class="involvement">
+                <h1>{{ involvement.name }}</h1>
+                <h2>{{ involvement.role }}</h2>
+                <p>{{ involvement.work_period }}</p>
+                <p>{{ involvement.description | safe | linebreaksbr }}</p>
+            </div>
+        {% endfor %}
 
 </div>
 {% endblock %}
