@@ -373,7 +373,6 @@ h2, h2 a {
     font-size:50px;
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    text-transform: lowercase;
     margin-right:50px;
     text-shadow: 5px -1px rgb(243, 199, 76);
     font-weight:800px;
@@ -397,6 +396,10 @@ h2, h2 a {
     border:none;
     margin-bottom:20px;
     padding:0;
+}
+
+.projects .desc b {
+    color:#C25100;
 }
 
 .projects .desc li{
@@ -485,7 +488,7 @@ h2, h2 a {
     font-size:22px;
     height:fit-content;
     border-radius: 10px;
-    border:1px solid black;
+    border:2px solid black;
     position: static;
     transition: 1s;
 }
