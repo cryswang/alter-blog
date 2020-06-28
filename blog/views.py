@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import redirect, get_object_or_404, render
-from .models import Post, Experience, Skill, Project
+from .models import Post, Experience, Skill, Project, Involvement
 from .forms import PostForm, ExperienceForm, SkillsForm, ProjectForm
 
 def post_list(request):
@@ -45,7 +45,8 @@ def cv_page(request):
     experiences = Experience.objects.order_by('published_date')
     skills = Skill.objects.order_by('level')
     projects = Project.objects.all()
-    return render(request, 'blog/cv_page.html', {'experiences': experiences, 'skills':skills, 'projects': projects})
+    involvements = Involvement.objects.all()
+    return render(request, 'blog/cv_page.html', {'experiences': experiences, 'skills': skills, 'projects': projects, 'involvements': involvements})
 
 def experience_new(request):
     if request.method == "POST":
