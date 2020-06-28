@@ -517,15 +517,33 @@ h2, h2 a {
 .bio {
     margin-bottom: 20px;
     margin-top:20px;
-    margin-left:100px;
-    padding: 20px;
+    padding: 25px 20px;
     width: 600px;
     font-size:22px;
     height:fit-content;
     border-radius: 10px;
     border:2px solid black;
+    box-shadow: 8px 8px 1px #ededed;
     position: static;
     transition: 1s;
+}
+
+.bio a {
+    font-weight:800;
+    background: -webkit-linear-gradient(bottom left, #C25100, rgb(243, 199, 76));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom:5px solid black;
+}
+
+.bio a:hover{
+    text-decoration: none;
+    border-bottom:3px solid transparent;
+    background: -webkit-linear-gradient(bottom left, #000, #000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-color:black;
+    color:black;
 }
 
 .bio_img {
