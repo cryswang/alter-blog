@@ -12,7 +12,7 @@
             <h2>{{ post.published_date }}</h2>
         {% endif %}
         <br>
-        <p>{{ post.text|linebreaksbr }}</p>
+        <p>{{ post.text | safe | linebreaksbr }}</p>
         </center>
         </div>
     </div>
