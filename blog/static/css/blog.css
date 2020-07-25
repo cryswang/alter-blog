@@ -9,11 +9,11 @@ body {
 }
 
 ::selection {
-    color:#b08c80;
+    color:black;
     background: hsla(14, 68%, 81%, 0.5); 
   }
   ::-moz-selection {
-    color:#b08c80;
+    color:black;
     background: hsla(14, 68%, 81%, 0.5); 
   }
 
