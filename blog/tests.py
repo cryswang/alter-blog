@@ -1,7 +1,6 @@
 from django.test import TestCase
-# from selenium import webdriver
 
-# browser = webdriver.Chrome()
-# browser.get('http://localhost:8000')
+class SmokeTest(TestCase):
 
-# assert 'Django' in browser.title
+    def test_bad_maths(self):
+        self.assertEqual(1 + 1, 3)
