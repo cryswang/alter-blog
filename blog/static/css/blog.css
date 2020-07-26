@@ -528,7 +528,7 @@ h2, h2 a {
     border-radius: 10px 10px;
     box-shadow: 8px 8px 1px #ededed;
     background-color:white;
-    z-index:999;
+    z-index:999999;
     transition: 1s;
 }
 
@@ -538,6 +538,10 @@ h2, h2 a {
     overflow:hidden;
     text-overflow: ellipsis;
     transition: 1s;
+}
+
+.post_content a {
+    position: relative;
     z-index:9999;
 }
 
