@@ -37,6 +37,16 @@ li{
     font-size: 43px;
 }
 
+.post_content:before {
+    content:'';
+    width:100%;
+    height:100%;    
+    position:absolute;
+    left:0;
+    top:0;
+    background:linear-gradient(transparent 150px, white);
+  }
+
 .cv_page h3 {
     font-family: 'Open Sans', sans-serif;
     font-size:50px;
@@ -183,11 +193,6 @@ h2, h2 a {
     margin: 10px 15px;
     color:#424242;
     border-bottom:5px solid #424242;
-    /*
-    box-shadow: 0px 2px 15px 0px rgba(209, 105, 31, 0.7);
-    border-radius: 20px 20px;
-    background-image: linear-gradient(to right, #f0beaf, #afdec3);
-    */
 }
 
 .header_links a:hover{
@@ -210,8 +215,10 @@ h2, h2 a {
     color:white;
     float:left;
     margin-top:-8px;
+    position: relative;
     border-radius: 20px;
     margin-bottom:20px;
+    z-index:9999;
 }
 
 .post:nth-child(odd) .date{
@@ -521,9 +528,28 @@ h2, h2 a {
     border-radius: 10px 10px;
     box-shadow: 8px 8px 1px #ededed;
     background-color:white;
-    z-index:9999;
+    z-index:999;
     transition: 1s;
 }
+
+.post_content{
+    position: relative;
+    max-height:500px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    transition: 1s;
+    z-index:9999;
+}
+
+.post_content::before {
+    content:'';
+    width:100%;
+    height:100%;    
+    position:absolute;
+    left:0;
+    top:0;
+    background:linear-gradient(transparent 300px, white);
+  }
 
 .bio {
     margin-bottom: 20px;
@@ -605,42 +631,6 @@ h2, h2 a {
     width:300px;
     transition:1s;
 }
-
-/*
-.connecting_line{
-    height:3px;
-    display:inline-block;
-    margin-top:-60px;
-}
-
-.post:nth-child(odd) .connecting_line{
-    width:53px;
-    margin-left:-260px;
-    background-image:linear-gradient(
-        to right,
-        rgba(209, 105, 31, 1),
-        rgba(0,0,0,0)
-    )
-}
-
-.post:nth-last-child(1) .connecting_line{
-    margin-left:-267px;
-}
-
-.post:nth-child(even) .connecting_line{
-    width:52px;
-    margin-right:-263px;
-    background-image:linear-gradient(
-        to left,
-        rgba(209, 105, 31, 1),
-        rgba(0,0,0,0)
-    )
-}
-
-.post:nth-last-child(2) .connecting_line{
-    margin-right:-273px;
-}
-*/
 
 .col-md-8 {
     padding: 35px 30px 0 60px;
