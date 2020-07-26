@@ -18,6 +18,16 @@ class HomePageTest(TestCase):
         found = resolve('/bio')  
         self.assertEqual(found.func, bio_page)
     
+    def test_home_page_returns_correct_html(self):
+        response = self.client.get('/bio')
+        self.assertTemplateUsed(response, 'blog/base.html')
+        self.assertTemplateUsed(response, 'blog/bio_page.html')
+    
     def test_cv_url_resolves_to_cv_page(self):
         found = resolve('/cv')  
         self.assertEqual(found.func, cv_page)
+    
+    def test_home_page_returns_correct_html(self):
+        response = self.client.get('/cv')
+        self.assertTemplateUsed(response, 'blog/base.html')
+        self.assertTemplateUsed(response, 'blog/cv_page.html')

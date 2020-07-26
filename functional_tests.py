@@ -24,8 +24,25 @@ class BlogOwnerTest(unittest.TestCase):
 
         self.browser.get('http://localhost:8000')
 
-        # She sees her name of the browser of her website so she knows
-        # it's loading properly.
+        # However, she's quick to notice that she's logged out as the
+        # plus icons indicating that she is able to make posts, are 
+        # not visible.
+        self.assertTrue(len(self.browser.find_elements_by_tag_name('span')) < 1)
+
+        # as the owner, she has to log in as an admin so she can make
+        # posts. Thus, when she notices that she isn't logged in, she
+        # navigates to the /admin url and inputs her credentials.
+        self.browser.get('http://localhost:8000/admin')
+        username = self.browser.find_element_by_id('id_username')
+        username.send_keys('cryswang')
+        password = self.browser.find_element_by_id('id_password')
+        password.send_keys('password')
+        password.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        # She sees then goes back to the homepage and checks that it's
+        # loading properly.
+        self.browser.get('http://localhost:8000')
         self.assertIn('crystal w.', self.browser.title)  
         header = self.browser.find_element_by_tag_name('h1').find_element_by_tag_name('a')
         header_text = header.get_attribute('innerHTML')
@@ -59,19 +76,13 @@ class BlogOwnerTest(unittest.TestCase):
         posts = self.browser.find_elements_by_class_name('post')
         self.assertTrue('Unit Testing', posts[0].find_element_by_tag_name('a').get_attribute('innerHTML'))
 
-        # When she does, she notices a typo (classic), and clicks on 
-        # the post link to be taken to the post itself
+        # Then, she clicks on the new post to double check how it looks
         newPostLink = self.browser.find_element_by_tag_name('a').get_attribute('href')
         newPost = resolve(newPostLink)
         self.assertEqual(newPost.func, post_detail)
 
-        # She then clicks on the edit button to edit the post
-
-        # She saves her changes, then refreshes to see that her changes
-        # are made.
-
         # Satsified, she logs off for the night
-        self.fail('Finish the test!')  
+        self.browser.quit()
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
