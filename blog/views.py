@@ -5,7 +5,7 @@ from .models import Post, Experience, Skill, Project, Involvement
 from .forms import PostForm, ExperienceForm, SkillsForm, ProjectForm, InvolvementForm
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
@@ -42,7 +42,7 @@ def bio_page(request):
     return render(request, 'blog/bio_page.html')
 
 def cv_page(request):
-    experiences = Experience.objects.order_by('published_date')
+    experiences = Experience.objects.order_by('-published_date')
     skills = Skill.objects.order_by('level')
     projects = Project.objects.all()
     involvements = Involvement.objects.all()
