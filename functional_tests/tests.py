@@ -93,14 +93,24 @@ class BlogOwnerTest(LiveServerTestCase):
 
         # She makes her new post and titles it Unit testing
         companyInput = self.browser.find_element_by_id('id_company')
+        for i in range(7):
+            companyInput.send_keys(Keys.BACKSPACE)
         companyInput.send_keys('Unit Testing')
         titleInput = self.browser.find_element_by_id('id_title')
+        for i in range(6):
+            titleInput.send_keys(Keys.BACKSPACE)
         titleInput.send_keys('Unit Tester')
         descriptionInput = self.browser.find_element_by_id('id_description')
-        descriptionInput.send_keys('Unit testing is a very tedious procedure but is\n very necessary.')
-        locationInput = self.browser.find_element_by_id('id_title')
+        for i in range(4):
+            descriptionInput.send_keys(Keys.BACKSPACE)
+        descriptionInput.send_keys('Unit testing is a very tedious procedure but is very necessary.')
+        locationInput = self.browser.find_element_by_id('id_location')
+        for i in range(15):
+            locationInput.send_keys(Keys.BACKSPACE)
         locationInput.send_keys('testing land')
-        workInput = self.browser.find_element_by_id('id_title')
+        workInput = self.browser.find_element_by_id('id_work_period')
+        for i in range(12):
+            workInput.send_keys(Keys.BACKSPACE)
         workInput.send_keys('now until forever')
 
         # She then goes down to the submit button and publishes the post
@@ -112,8 +122,14 @@ class BlogOwnerTest(LiveServerTestCase):
         # It should automatically redirect back to /cv for her to see that it's there and
         # published correctly in the right order
         experiences = self.browser.find_elements_by_class_name('exp')
-        self.assertTrue('Unit Testing', experiences[0].find_element_by_tag_name('h1').get_attribute('innerHTML'))
+        self.assertEqual('Unit Testing', experiences[0].find_element_by_tag_name('h1').get_attribute('innerHTML'))
         title = experiences[0].find_element_by_tag_name('h2').get_attribute('innerHTML')
+        self.assertEqual('Unit Tester', title)
+        desc = experiences[0].find_element_by_class_name('desc').find_element_by_tag_name('p').get_attribute('innerHTML')
+        self.assertEqual('Unit testing is a very tedious procedure but is very necessary.', desc)
+        info = experiences[0].find_element_by_class_name('additional_info')
+        self.assertEqual('now until forever', info.find_elements_by_tag_name('p')[0].find_element_by_tag_name('b').get_attribute('innerHTML'))
+        self.assertEqual('testing land', info.find_elements_by_tag_name('p')[1].find_element_by_tag_name('b').get_attribute('innerHTML'))
 
         # she also picked up a few skills along the way from the internship, and would
         # like to add them onto her cv. She begins by clicking the + icon by the skills
@@ -163,8 +179,42 @@ class BlogOwnerTest(LiveServerTestCase):
         # It should automatically redirect back to /cv for her to see that it's there and
         # published correctly in the right order
         skills_box = self.browser.find_element_by_class_name('skills_box')
-        self.assertTrue('Django', skills_box.find_element_by_class_name('skill_e').get_attribute('innerHTML'))
-        self.assertTrue('Python', skills_box.find_element_by_class_name('skill_f').get_attribute('innerHTML'))
+        self.assertEqual('Django', skills_box.find_element_by_class_name('skill_e').get_attribute('innerHTML'))
+        self.assertEqual('Python', skills_box.find_element_by_class_name('skill_f').get_attribute('innerHTML'))
+    
+    def test_can_add_involvement_and_project(self):  
+        self.browser.get('%s%s' % (self.live_server_url, '/cv'))
+        self.browser.get('%s%s' % (self.live_server_url, '/cv/project/new/'))
+        header = self.browser.find_element_by_tag_name('h2')
+        header_text = header.get_attribute('innerHTML')
+        self.assertIn('New project', header_text)
+        self.assertTrue(self.browser.find_element_by_class_name('post-form'))
+
+        # She makes her new post and titles it Unit testing
+        titleInput = self.browser.find_element_by_id('id_title')
+        for i in range(7):
+            titleInput.send_keys(Keys.BACKSPACE)
+        titleInput.send_keys('Unit Tester')
+        descriptionInput = self.browser.find_element_by_id('id_description')
+        for i in range(4):
+            descriptionInput.send_keys(Keys.BACKSPACE)
+        descriptionInput.send_keys('Unit testing is a very tedious procedure but is very necessary.')
+        workInput = self.browser.find_element_by_id('id_work_period')
+        for i in range(12):
+            workInput.send_keys(Keys.BACKSPACE)
+        workInput.send_keys('now until forever')
+
+        # She then goes down to the submit button and publishes the post
+        submit = self.browser.find_element_by_tag_name('button')
+        self.assertEqual('submit', submit.get_attribute('type'))
+        submit.send_keys(Keys.ENTER)  
+        time.sleep(1)
+        
+        # It should automatically redirect back to /cv for her to see that it's there and
+        # published correctly in the right order
+        projects = self.browser.find_elements_by_class_name('projects')
+        self.assertEqual('Unit Tester', projects[0].find_element_by_tag_name('h1').get_attribute('innerHTML'))
+        work_period = projects[0].find_element_by_tag_name('h2').get_attribute('innerHTML')
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
