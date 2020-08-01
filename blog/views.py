@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, get_object_or_404, render
 from .models import Post, Experience, Skill, Project, Involvement
 from .forms import PostForm, ExperienceForm, SkillsForm, ProjectForm, InvolvementForm

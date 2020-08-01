@@ -34,10 +34,7 @@ class BlogOwnerTest(LiveServerTestCase):
         # However, she's quick to notice that she's logged out as the
         # plus icons indicating that she is able to make posts, are 
         # not visible.
-        try:
-            self.browser.find_elements_by_tag_name('span')
-        except NoSuchElementException:
-            pass
+        self.browser.find_elements_by_tag_name('span')
 
         # as the owner, she has to log in as an admin so she can make
         # posts. Thus, when she notices that she isn't logged in, she
@@ -48,6 +45,7 @@ class BlogOwnerTest(LiveServerTestCase):
         password = self.browser.find_element_by_id('id_password')
         password.send_keys('mypassword')
         self.browser.find_element_by_xpath('//input[@value="Log in"]').click()
+        
         time.sleep(1)
 
         # She sees then goes back to the homepage and checks that it's
@@ -62,35 +60,32 @@ class BlogOwnerTest(LiveServerTestCase):
         # clicks on it.
     
         self.assertEqual('glyphicon glyphicon-plus', self.browser.find_element_by_tag_name('span').get_attribute('class'))
-        # self.browser.get('localhost:8000/post/new')
-        # self.assertEqual('New Post', self.browser.find_element_by_tag_name('h2').get_attribute('innerHTML'))
-        # self.assertTrue(self.browser.find_element_by_class_name('post-form'))
+        self.browser.get('%s%s' % (self.live_server_url, '/post/new/'))
+        self.assertEqual('New Post', self.browser.find_element_by_tag_name('h2').get_attribute('innerHTML'))
+        self.assertTrue(self.browser.find_element_by_class_name('post-form'))
 
-        # # She makes her new post and titles it Unit testing
-        # titleInput = self.browser.find_element_by_id('id_title')
-        # titleInput.send_keys('Unit Testing')
+        # She makes her new post and titles it Unit testing
+        titleInput = self.browser.find_element_by_id('id_title')
+        titleInput.send_keys('Unit Testing')
 
-        # # And writes a brief paragraph on what it is and how she
-        # # accomplishes it
-        # titleInput = self.browser.find_element_by_id('id_text')
-        # titleInput.send_keys('Unit testing is a very tedious procedure but is\n very necessary.')
+        # And writes a brief paragraph on what it is and how she
+        # accomplishes it
+        titleInput = self.browser.find_element_by_id('id_text')
+        titleInput.send_keys('Unit testing is a very tedious procedure but is\n very necessary.')
 
-        # # She then goes down to the submit button and publishes the post
-        # submit = self.browser.find_element_by_tag_name('button')
-        # self.assertEqual('submit', submit.get_attribute('type'))
-        # submit.send_keys(Keys.ENTER)  
-        # time.sleep(1)
+        # She then goes down to the submit button and publishes the post
+        submit = self.browser.find_element_by_tag_name('button')
+        self.assertEqual('submit', submit.get_attribute('type'))
+        submit.send_keys(Keys.ENTER)  
+        time.sleep(1)
         
-        # # Then goes to the home page to see that it's there and it was
-        # # published correctly and also in the right order
-        # self.browser.get(self.live_server_url)
-        # posts = self.browser.find_elements_by_class_name('post')
-        # self.assertTrue('Unit Testing', posts[0].find_element_by_tag_name('a').get_attribute('innerHTML'))
-        # post = posts[0].find_elements_by_class_name('post-content')
-        # self.assertTrue(post.size['height'] < 600)
-
-        # # Satsified, she logs off for the night
-        # self.browser.quit()
+        # Then goes to the home page to see that it's there and it was
+        # published correctly and also in the right order
+        self.browser.get(self.live_server_url)
+        posts = self.browser.find_elements_by_class_name('post')
+        self.assertTrue('Unit Testing', posts[0].find_element_by_tag_name('a').get_attribute('innerHTML'))
+        post = posts[0].find_element_by_class_name('post-content')
+        self.assertTrue(post.size['height'] < 600)
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
