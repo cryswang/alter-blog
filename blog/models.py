@@ -33,7 +33,7 @@ class Experience(models.Model):
 
 class Skill(models.Model):
     title = models.CharField(max_length=200, default="skill")
-    experienced = models.BooleanField(default="False")
+    experienced = models.BooleanField(default="True")
     level = models.IntegerField(default="0")
 
     def publish(self):

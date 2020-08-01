@@ -80,8 +80,11 @@ class BlogOwnerTest(LiveServerTestCase):
         self.assertEqual(5, len(icons))
         
         self.assertEqual('Education.', self.browser.find_elements_by_tag_name('h3')[0].get_attribute('innerHTML'))
-
         self.assertEqual('Experiences.', self.browser.find_elements_by_tag_name('h3')[1].get_attribute('innerHTML'))
+        self.assertEqual('Projects.', self.browser.find_elements_by_tag_name('h3')[2].get_attribute('innerHTML'))
+        self.assertEqual('Skills.', self.browser.find_elements_by_tag_name('h3')[3].get_attribute('innerHTML'))
+        self.assertEqual('Involvement.', self.browser.find_elements_by_tag_name('h3')[4].get_attribute('innerHTML'))
+
         self.browser.get('%s%s' % (self.live_server_url, '/cv/experience/new/'))
         header = self.browser.find_element_by_tag_name('h2')
         header_text = header.get_attribute('innerHTML')
@@ -91,21 +94,12 @@ class BlogOwnerTest(LiveServerTestCase):
         # She makes her new post and titles it Unit testing
         companyInput = self.browser.find_element_by_id('id_company')
         companyInput.send_keys('Unit Testing')
-
-        # She makes her new post and titles it Unit testing
         titleInput = self.browser.find_element_by_id('id_title')
         titleInput.send_keys('Unit Tester')
-
-        # And writes a brief paragraph on what it is and how she
-        # accomplishes it
         descriptionInput = self.browser.find_element_by_id('id_description')
         descriptionInput.send_keys('Unit testing is a very tedious procedure but is\n very necessary.')
-        
-         # She makes her new post and titles it Unit testing
         locationInput = self.browser.find_element_by_id('id_title')
         locationInput.send_keys('testing land')
-
-         # She makes her new post and titles it Unit testing
         workInput = self.browser.find_element_by_id('id_title')
         workInput.send_keys('now until forever')
 
@@ -121,9 +115,56 @@ class BlogOwnerTest(LiveServerTestCase):
         self.assertTrue('Unit Testing', experiences[0].find_element_by_tag_name('h1').get_attribute('innerHTML'))
         title = experiences[0].find_element_by_tag_name('h2').get_attribute('innerHTML')
 
-        # self.assertEqual('Projects.', self.browser.find_elements_by_tag_name('h3')[2].get_attribute('innerHTML'))
-        # self.assertEqual('Skills.', self.browser.find_elements_by_tag_name('h3')[3].get_attribute('innerHTML'))
-        # self.assertEqual('Involvement.', self.browser.find_elements_by_tag_name('h3')[4].get_attribute('innerHTML'))
+        # she also picked up a few skills along the way from the internship, and would
+        # like to add them onto her cv. She begins by clicking the + icon by the skills
+        # section
+        self.browser.get('%s%s' % (self.live_server_url, '/cv/skill/new/'))
+        header = self.browser.find_element_by_tag_name('h2')
+        header_text = header.get_attribute('innerHTML')
+        self.assertIn('New Skill', header_text)
+        self.assertTrue(self.browser.find_element_by_class_name('post-form'))
+
+        # She adds her new skill; she's experienced in it, but it's still not her top skill,
+        # so she ranks it at a 1, which is just behind the 0th (top) skill.
+        titleInput = self.browser.find_element_by_id('id_title')
+        for i in range(5):
+            titleInput.send_keys(Keys.BACKSPACE)
+        titleInput.send_keys('Django')
+        self.assertEqual('True', self.browser.find_element_by_id('id_experienced').get_attribute('value'))
+        levelInput = self.browser.find_element_by_id('id_level')
+        levelInput.send_keys(Keys.UP)
+
+        # She then goes down to the submit button and adds the skill
+        submit = self.browser.find_element_by_tag_name('button')
+        self.assertEqual('submit', submit.get_attribute('type'))
+        submit.send_keys(Keys.ENTER)  
+        time.sleep(1)
+
+        self.browser.get('%s%s' % (self.live_server_url, '/cv/skill/new/'))
+        header = self.browser.find_element_by_tag_name('h2')
+        header_text = header.get_attribute('innerHTML')
+        self.assertIn('New Skill', header_text)
+        self.assertTrue(self.browser.find_element_by_class_name('post-form'))
+
+        # She adds her new skill; she's not super experienced in it, but is
+        # still somewhat familiar, so she ranks it as her top inexperienced skill
+        titleInput = self.browser.find_element_by_id('id_title')
+        for i in range(5):
+            titleInput.send_keys(Keys.BACKSPACE)
+        titleInput.send_keys('Python')
+        self.browser.find_element_by_id('id_experienced').click()
+
+        # She then goes down to the submit button and adds the skill
+        submit = self.browser.find_element_by_tag_name('button')
+        self.assertEqual('submit', submit.get_attribute('type'))
+        submit.send_keys(Keys.ENTER)  
+        time.sleep(1)
+        
+        # It should automatically redirect back to /cv for her to see that it's there and
+        # published correctly in the right order
+        skills_box = self.browser.find_element_by_class_name('skills_box')
+        self.assertTrue('Django', skills_box.find_element_by_class_name('skill_e').get_attribute('innerHTML'))
+        self.assertTrue('Python', skills_box.find_element_by_class_name('skill_f').get_attribute('innerHTML'))
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  

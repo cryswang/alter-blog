@@ -76,6 +76,7 @@ def experience_edit(request, pk):
 def skill_new(request):
     if request.method == "POST":
         form = SkillsForm(request.POST)
+        temp = request.POST.get('experienced', False) 
         if form.is_valid():
             skill = form.save(commit=False)
             skill.published_date = timezone.now()
