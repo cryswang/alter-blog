@@ -15,14 +15,34 @@ class BlogTest(TestCase):
         self.assertTemplateUsed(response, 'blog/post_list.html')
     
     def test_new_post_returns_correct_html(self):
-        response = self.client.get('/post_new')
-        self.assertTemplateUsed(response, 'blog/base.html')
-        self.assertTemplateUsed(response, 'blog/post_new.html')
-    
-    def test_blog_edit_returns_correct_html(self):
-        response = self.client.get('/post_new')
+        response = self.client.get('/post/new/')
         self.assertTemplateUsed(response, 'blog/base.html')
         self.assertTemplateUsed(response, 'blog/post_edit.html')
+    
+    def test_blog_edit_returns_correct_html(self):
+        response = self.client.get('/post/new/')
+        self.assertTemplateUsed(response, 'blog/base.html')
+        self.assertTemplateUsed(response, 'blog/post_edit.html')
+    
+    # def test_can_save_a_POST_request(self):
+    #     user = self.client.create_user(email = email, name = name, password = password)
+
+    #     user.is_superuser = True
+
+    #     user.save(using=self._db)
+    #     self.client.force_login(user)
+    #     response = self.client.post('/post_new', data={'title': 'A new list item'})
+    #     self.assertIn('A new list item', response.content.decode())
+    
+    # test to create a post
+    # test redirect
+    # create another
+    # check they were ordered correctly
+    # then be able to edit one
+    # test redirect
+    # test objects count
+
+    # test creating an invalid post
 
 class BioPageTest(TestCase):
     def test_bio_url_resolves_to_bio_page(self):
@@ -43,3 +63,22 @@ class CVPageTest(TestCase):
         response = self.client.get('/cv')
         self.assertTemplateUsed(response, 'blog/base.html')
         self.assertTemplateUsed(response, 'blog/cv_page.html')
+    
+    # test to create a experience, 
+    # create another and check they were ordered correctly
+    # then be able to edit one
+    # test objects count
+
+    # test to create a project, 
+    # create another and check they were ordered correctly
+    # then be able to edit one
+    # test objects count
+
+    # test to create a skill, 
+    # create another and check they were ordered correctly
+    # test objects count
+
+    # test to create an involvement, 
+    # create another and check they were ordered correctly
+    # then be able to edit one
+    # test objects count
