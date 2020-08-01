@@ -215,6 +215,47 @@ class BlogOwnerTest(LiveServerTestCase):
         projects = self.browser.find_elements_by_class_name('projects')
         self.assertEqual('Unit Tester', projects[0].find_element_by_tag_name('h1').get_attribute('innerHTML'))
         work_period = projects[0].find_element_by_tag_name('h2').get_attribute('innerHTML')
+        self.assertEqual('now until forever', work_period)
+        desc = projects[0].find_element_by_tag_name('p').get_attribute('innerHTML')
+        self.assertEqual('Unit testing is a very tedious procedure but is very necessary.', desc)
+
+        self.browser.get('%s%s' % (self.live_server_url, '/cv/involvement/new/'))
+        header = self.browser.find_element_by_tag_name('h2')
+        header_text = header.get_attribute('innerHTML')
+        self.assertIn('New involvement', header_text)
+        self.assertTrue(self.browser.find_element_by_class_name('post-form'))
+
+        # She makes her new post and titles it Unit testing
+        nameInput = self.browser.find_element_by_id('id_name')
+        for i in range(12):
+            nameInput.send_keys(Keys.BACKSPACE)
+        nameInput.send_keys('uob css')
+        roleInput = self.browser.find_element_by_id('id_role')
+        for i in range(6):
+            roleInput.send_keys(Keys.BACKSPACE)
+        roleInput.send_keys('new member')
+        descriptionInput = self.browser.find_element_by_id('id_description')
+        for i in range(4):
+            descriptionInput.send_keys(Keys.BACKSPACE)
+        descriptionInput.send_keys('attending balls and secret after parties')
+        workInput = self.browser.find_element_by_id('id_work_period')
+        for i in range(12):
+            workInput.send_keys(Keys.BACKSPACE)
+        workInput.send_keys('march 2020')
+
+        # She then goes down to the submit button and publishes the post
+        submit = self.browser.find_element_by_tag_name('button')
+        self.assertEqual('submit', submit.get_attribute('type'))
+        submit.send_keys(Keys.ENTER)  
+        time.sleep(1)
+        
+        # It should automatically redirect back to /cv for her to see that it's there and
+        # published correctly in the right order
+        invs = self.browser.find_elements_by_class_name('involvement')
+        self.assertEqual('uob css', invs[0].find_element_by_tag_name('h1').get_attribute('innerHTML'))
+        self.assertEqual('new member', invs[0].find_element_by_tag_name('h2').get_attribute('innerHTML'))
+        self.assertEqual('march 2020', invs[0].find_element_by_tag_name('h3').get_attribute('innerHTML'))
+        self.assertEqual('attending balls and secret after parties', invs[0].find_element_by_tag_name('p').get_attribute('innerHTML'))
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
