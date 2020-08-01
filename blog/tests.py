@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.urls import resolve
 from django.http import HttpRequest
+from django.contrib.auth.models import User
+from django.test.client import Client
 from blog.views import post_list, bio_page, cv_page, post_detail
+from blog.models import Post
 
 class BlogTest(TestCase):
 
@@ -24,23 +27,33 @@ class BlogTest(TestCase):
         self.assertTemplateUsed(response, 'blog/base.html')
         self.assertTemplateUsed(response, 'blog/post_edit.html')
     
-    # def test_can_save_a_POST_request(self):
-    #     user = self.client.create_user(email = email, name = name, password = password)
-
-    #     user.is_superuser = True
-
-    #     user.save(using=self._db)
-    #     self.client.force_login(user)
-    #     response = self.client.post('/post_new', data={'title': 'A new list item'})
-    #     self.assertIn('A new list item', response.content.decode())
+    def test_can_save_a_POST_request(self):
+        password = 'mypassword' 
+        my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
+        login = self.client.login(username='myuser', password=password)
+        response = self.client.post('/post/new', data={'form': 'A new list item'})
+        # new_item = Post.objects.first()  
+        # self.assertEqual(new_item.text, 'A new list item')  
+        # self.assertIn('A new list item', response.content.decode())
     
-    # test to create a post
-    # test redirect
-    # create another
-    # check they were ordered correctly
-    # then be able to edit one
-    # test redirect
-    # test objects count
+# class PostModelTest(TestCase):
+
+#     def test_saving_and_retrieving_posts(self):
+#         first_item = Post()
+#         first_item.text = 'The first (ever) list item'
+#         first_item.save()
+
+#         second_item = Post()
+#         second_item.text = 'Item the second'
+#         second_item.save()
+
+#         saved_items = Post.objects.all()
+#         self.assertEqual(saved_items.count(), 2)
+
+#         first_saved_item = saved_items[0]
+#         second_saved_item = saved_items[1]
+#         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+#         self.assertEqual(second_saved_item.text, 'Item the second')
 
     # test creating an invalid post
 
