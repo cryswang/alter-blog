@@ -84,7 +84,7 @@ class BlogOwnerTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
         posts = self.browser.find_elements_by_class_name('post')
         self.assertTrue('Unit Testing', posts[0].find_element_by_tag_name('a').get_attribute('innerHTML'))
-        post = posts[0].find_element_by_class_name('post-content')
+        post = posts[0].find_element_by_class_name('post_content')
         self.assertTrue(post.size['height'] < 600)
 
 if __name__ == '__main__':  
