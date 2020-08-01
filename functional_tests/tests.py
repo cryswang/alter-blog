@@ -10,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from blog.views import post_list, post_new, post_detail
 
-class BlogOwnerTest(LiveServerTestCase):  
+class OwnerTest(LiveServerTestCase):  
     def setUp(self):  
         self.browser = webdriver.Chrome()
 
@@ -256,6 +256,67 @@ class BlogOwnerTest(LiveServerTestCase):
         self.assertEqual('new member', invs[0].find_element_by_tag_name('h2').get_attribute('innerHTML'))
         self.assertEqual('march 2020', invs[0].find_element_by_tag_name('h3').get_attribute('innerHTML'))
         self.assertEqual('attending balls and secret after parties', invs[0].find_element_by_tag_name('p').get_attribute('innerHTML'))
+
+class VisitorTest(LiveServerTestCase):  
+    def setUp(self):  
+        self.browser = webdriver.Chrome()
+        self.browser.get(self.live_server_url)
+
+    def tearDown(self):  
+        self.browser.quit()
+
+    def test_view_bio_page(self):  
+         # Crystal is a student who makes semi-regular blog posts
+         # centered around her budding career in software engineering
+         # She opens up her blog, ready to make a new post about
+         # a current topic she's exploring.
+        
+        self.assertIn('crystal w.', self.browser.title)  
+        header = self.browser.find_element_by_tag_name('h1').find_element_by_tag_name('a')
+        header_text = header.get_attribute('innerHTML')
+        self.assertIn('crystal', header_text)
+
+        # There's no way to add new posts
+        try:
+            self.browser.find_element_by_tag_name('span')
+        except NoSuchElementException:
+            pass
+            
+        self.browser.get('%s%s' % (self.live_server_url, '/bio'))
+        bio1 = '<p><b>Hi! I\'m Crystal</b>, an upcoming-fourth year undergraduate CS student. I\'m interested in <b>front-end web development</b> and <b>full stack engineering</b>, although there are countless other fields I\'d love to explore <i>(such as UX)</i>.</p>'
+        bio2 = '<p>I like to read mysteries and watch action shows, and spend my weekends cooking and, occassionally, writing. You can check out my projects on <a href=\"https://github.com/cryswang\">github</a> and connect with me on <a href=\"https://www.linkedin.com/in/crystal-wang-72885759/\">linkedin</a>.</p>'
+        bio3 = '<p><b>Thanks for stopping by!</b></p>'
+        bio = bio1 + '<br>' + bio2 + '<br>' + bio3
+        browserBio = "".join(self.browser.find_element_by_class_name('bio').get_attribute('innerHTML').split("\n"))
+        self.assertEqual(bio, browserBio)
+    
+    def test_view_cv_page(self):  
+
+        self.browser.get('%s%s' % (self.live_server_url, '/cv'))
+        # There's no way to add new posts
+        try:
+            self.browser.find_element_by_tag_name('span')
+        except NoSuchElementException:
+            pass
+        
+        desc = []
+        desc.append('Currently pursuing a <b>B.S. in Computer Science </b>')
+        desc.append('with a <b>Creative Writing Minor</b> and an alumni of the')
+        desc.append('<i>Advanced Cybersecurity Experience for Students</i>')
+        desc.append('Honors College, also known as <b>ACES</b>.')
+
+        edu = self.browser.find_element_by_class_name('edu')
+        self.assertEqual('University of Maryland, College Park', edu.find_element_by_tag_name('h1').get_attribute('innerHTML'))
+        educationDesc = edu.find_element_by_class_name('desc').find_elements_by_tag_name('p')
+        for i in range(4):
+            self.assertEquals(educationDesc[i].get_attribute('innerHTML'), desc[i])
+        
+        titles = edu.find_element_by_class_name('additional_info').find_elements_by_tag_name('h2')
+        self.assertEquals('gpa', titles[0].get_attribute('innerHTML'))
+        self.assertEquals('grad. date', titles[1].get_attribute('innerHTML'))
+        info = edu.find_element_by_class_name('additional_info').find_elements_by_tag_name('p')
+        self.assertEquals('3.6 / 4.0', info[0].get_attribute('innerHTML'))
+        self.assertEquals('may 2021', info[1].get_attribute('innerHTML'))
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
