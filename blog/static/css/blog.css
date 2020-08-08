@@ -335,7 +335,6 @@ h2, h2 a {
     text-transform: lowercase;
 }
 
-
 .exp .accent_line{
     background-image:linear-gradient(to right, #f0beaf, #afdec3);
     margin-left:15px;
@@ -666,7 +665,8 @@ h2, h2 a {
 
 .post_detail .post{
     width:800px;
-    border:2px solid;
+    box-shadow: none;
+    border:none;
     padding: 0 30px 20px 30px;
     margin-left: 90px;
     margin-top: 50px;

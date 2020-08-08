@@ -41,6 +41,15 @@ class PostModelTest(TestCase):
         new_item = Post.objects.first()  
         self.assertEqual(new_item.title, 'something')
         self.assertEqual(new_item.text, 'this is text')
+    
+    def test_can_redirect_and_edit_request(self):
+        password = 'mypassword' 
+        my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
+        my_admin = authenticate(username='myuser', password=password)
+        self.client.login(username='myuser', password=password)
+        self.client.post('/post/new/', data={'title':'something', 'text': 'this is text'})
+        response = self.client.post('/post/1/edit/', data={'title':'something', 'text': 'this is text'})
+        self.assertRedirects(response, '/post/1/', status_code=302)
 
     def test_saving_and_retrieving_posts(self):
         admin = User.objects.create_superuser('myuser', 'myemail@test.com', 'mypassword')
@@ -113,6 +122,22 @@ class ExperienceModelTest(TestCase):
         self.assertEqual(new_item.description, 'this is what i did')
         self.assertEqual(new_item.location, 'remote')
         self.assertEqual(new_item.work_period, 'today')
+
+    def test_can_redirect_and_edit_request(self):
+        password = 'mypassword' 
+        my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
+        my_admin = authenticate(username='myuser', password=password)
+        self.client.login(username='myuser', password=password)
+        data={
+            'company': 'nerdwallet',
+            'title':'intern',
+            'description': 'this is what i did',
+            'location': 'remote',
+            'work_period': 'today'
+        }
+        self.client.post('/cv/experience/new/', data)
+        response = self.client.post('/cv/experience/1/edit', data)
+        self.assertRedirects(response, '/cv', status_code=302)
     
     def test_saving_and_retrieving_experiences(self):
         initialCount = Experience.objects.all().count()
@@ -226,6 +251,20 @@ class ProjectModelTest(TestCase):
         self.assertEqual(new_item.description, 'this is what i did')
         self.assertEqual(new_item.work_period, 'today')
     
+    def test_can_edit_and_redirect_request(self):
+        password = 'mypassword' 
+        my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
+        my_admin = authenticate(username='myuser', password=password)
+        self.client.login(username='myuser', password=password)
+        data={
+            'title': 'proj wall',
+            'description': 'this is what i did',
+            'work_period': 'today'
+        }
+        self.client.post('/cv/project/new/', data)
+        response = self.client.post('/cv/project/1/edit', data)
+        self.assertRedirects(response, '/cv', status_code=302)
+
     def test_saving_and_retrieving_projects(self):
         initialCount = Project.objects.all().count()
         first_item = Project()
@@ -278,6 +317,21 @@ class InvolvementModelTest(TestCase):
         self.assertEqual(new_item.role, 'intern')
         self.assertEqual(new_item.description, 'this is what i did')
         self.assertEqual(new_item.work_period, 'today')
+    
+    def test_can_edit_and_redirect_request(self):
+        password = 'mypassword' 
+        my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
+        my_admin = authenticate(username='myuser', password=password)
+        self.client.login(username='myuser', password=password)
+        data={
+            'name': 'wall',
+            'role':'intern',
+            'description': 'this is what i did',
+            'work_period': 'today'
+        }
+        self.client.post('/cv/involvement/new/', data)
+        response = self.client.post('/cv/involvement/1/edit', data)
+        self.assertRedirects(response, '/cv', status_code=302)
     
     def test_saving_and_retrieving_involvements(self):
         initialCount = Involvement.objects.all().count()
