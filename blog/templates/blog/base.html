@@ -12,6 +12,9 @@
                 {% if user.is_authenticated %}
                 <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
                 {% endif %}
+                {% if not user.is_authenticated %}
+                <a href="/admin"><button class="login">login.</button></a>
+                {% endif %}
                 <center>
                     <div class="shape_1"></div>
                     <div class="shape_2"></div>
