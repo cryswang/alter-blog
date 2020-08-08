@@ -1,10 +1,13 @@
 from django.test import TestCase
 from django.urls import resolve
 from django.http import HttpRequest
+import json
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from django.test.client import Client
 from blog.views import post_list, bio_page, cv_page, post_detail
 from blog.models import Post
+from blog.forms import PostForm
 
 class BlogTest(TestCase):
 
@@ -30,30 +33,38 @@ class BlogTest(TestCase):
     def test_can_save_a_POST_request(self):
         password = 'mypassword' 
         my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
-        login = self.client.login(username='myuser', password=password)
-        response = self.client.post('/post/new', data={'form': 'A new list item'})
-        # new_item = Post.objects.first()  
-        # self.assertEqual(new_item.text, 'A new list item')  
-        # self.assertIn('A new list item', response.content.decode())
+        my_admin = authenticate(username='myuser', password=password)
+        self.client.login(username='myuser', password=password)
+        response = self.client.post('/post/new/', data={'title':'something', 'text': 'this is text'})
+        new_item = Post.objects.first()  
+        self.assertEqual(new_item.title, 'something')
     
 # class PostModelTest(TestCase):
 
-#     def test_saving_and_retrieving_posts(self):
-#         first_item = Post()
-#         first_item.text = 'The first (ever) list item'
-#         first_item.save()
+    # def test_saving_and_retrieving_posts(self):
+    #     # anonymous/null author error
+    #     password = 'mypassword' 
+    #     my_admin = User.objects.create_superuser('myuser', 'myemail@test.com', password)
+    #     my_admin = authenticate(username='myuser', password=password)
+    #     self.client.login(username='myuser', password=password)
+    #     initialCount = Post.objects.all().count()
+    #     first_item = Post()
+    #     first_item.text = 'The first (ever) list item'
+    #     first_item.save()
 
-#         second_item = Post()
-#         second_item.text = 'Item the second'
-#         second_item.save()
+    #     second_item = Post()
+    #     second_item.text = 'Item the second'
+    #     second_item.save()
 
-#         saved_items = Post.objects.all()
-#         self.assertEqual(saved_items.count(), 2)
+    #     current_items = Post.objects.all()
+    #     self.assertEqual(current_items.count(), initialCount + 2)
 
-#         first_saved_item = saved_items[0]
-#         second_saved_item = saved_items[1]
-#         self.assertEqual(first_saved_item.text, 'The first (ever) list item')
-#         self.assertEqual(second_saved_item.text, 'Item the second')
+        # because the blog displays posts in reverse chronoglogical order;
+        # thus the most recent post should be at the top.
+        # first_saved_item = current_items[1]
+        # second_saved_item = current_items[0]
+        # self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+        # self.assertEqual(second_saved_item.text, 'Item the second')
 
     # test creating an invalid post
 
