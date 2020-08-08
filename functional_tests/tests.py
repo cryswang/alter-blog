@@ -69,29 +69,33 @@ class OwnerTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
         posts = self.browser.find_elements_by_class_name('post')
         self.assertTrue('Unit Testing', posts[0].find_element_by_tag_name('a').get_attribute('innerHTML'))
+
+        # The post should be less than 600px tall; any post with content
+        # exceeding it should be cut off
         post = posts[0].find_element_by_class_name('post_content')
         self.assertTrue(post.size['height'] < 600)
     
     def test_can_update_cv(self):  
+        # To prepare for recruiting season, Crystal wants to update
+        # her cv to match all of her newest qualification and everything
+        # she's learned thus far. She goes to her CV page and sees that
+        # she has the option to add new sections.
         self.browser.get('%s%s' % (self.live_server_url, '/cv'))
         icons = self.browser.find_elements_by_tag_name('span')
         for icon in icons:
             self.assertEqual('glyphicon glyphicon-plus', icon.get_attribute('class'))
         self.assertEqual(5, len(icons))
-        
-        self.assertEqual('Education.', self.browser.find_elements_by_tag_name('h3')[0].get_attribute('innerHTML'))
-        self.assertEqual('Experiences.', self.browser.find_elements_by_tag_name('h3')[1].get_attribute('innerHTML'))
-        self.assertEqual('Projects.', self.browser.find_elements_by_tag_name('h3')[2].get_attribute('innerHTML'))
-        self.assertEqual('Skills.', self.browser.find_elements_by_tag_name('h3')[3].get_attribute('innerHTML'))
-        self.assertEqual('Involvement.', self.browser.find_elements_by_tag_name('h3')[4].get_attribute('innerHTML'))
 
+        # She first decides to add a new experience, so she clicks on the plus
+        # icon in the experiences section
         self.browser.get('%s%s' % (self.live_server_url, '/cv/experience/new/'))
         header = self.browser.find_element_by_tag_name('h2')
         header_text = header.get_attribute('innerHTML')
         self.assertIn('New Experience', header_text)
         self.assertTrue(self.browser.find_element_by_class_name('post-form'))
 
-        # She makes her new post and titles it Unit testing
+        # She fills in the info about the last place she worked at and
+        # what she did
         companyInput = self.browser.find_element_by_id('id_company')
         for i in range(7):
             companyInput.send_keys(Keys.BACKSPACE)
@@ -113,7 +117,8 @@ class OwnerTest(LiveServerTestCase):
             workInput.send_keys(Keys.BACKSPACE)
         workInput.send_keys('now until forever')
 
-        # She then goes down to the submit button and publishes the post
+        # She then goes down to the submit button and saves the new experience
+        # to her blog
         submit = self.browser.find_element_by_tag_name('button')
         self.assertEqual('submit', submit.get_attribute('type'))
         submit.send_keys(Keys.ENTER)  
@@ -183,6 +188,10 @@ class OwnerTest(LiveServerTestCase):
         self.assertEqual('Python', skills_box.find_element_by_class_name('skill_f').get_attribute('innerHTML'))
     
     def test_can_add_involvement_and_project(self):  
+        # Crystal recently got involved in a new group and worked on
+        # a project that she'd like to add to her cv. She goes to the cv
+        # page and first decides to add the project she worked on
+        # with the group
         self.browser.get('%s%s' % (self.live_server_url, '/cv'))
         self.browser.get('%s%s' % (self.live_server_url, '/cv/project/new/'))
         header = self.browser.find_element_by_tag_name('h2')
@@ -190,7 +199,7 @@ class OwnerTest(LiveServerTestCase):
         self.assertIn('New project', header_text)
         self.assertTrue(self.browser.find_element_by_class_name('post-form'))
 
-        # She makes her new post and titles it Unit testing
+        # She fills in the fields of the form to describe what she did
         titleInput = self.browser.find_element_by_id('id_title')
         for i in range(7):
             titleInput.send_keys(Keys.BACKSPACE)
@@ -204,7 +213,8 @@ class OwnerTest(LiveServerTestCase):
             workInput.send_keys(Keys.BACKSPACE)
         workInput.send_keys('now until forever')
 
-        # She then goes down to the submit button and publishes the post
+        # She then goes down to the submit button and saves the project
+        # to her blog
         submit = self.browser.find_element_by_tag_name('button')
         self.assertEqual('submit', submit.get_attribute('type'))
         submit.send_keys(Keys.ENTER)  
@@ -219,13 +229,16 @@ class OwnerTest(LiveServerTestCase):
         desc = projects[0].find_element_by_tag_name('p').get_attribute('innerHTML')
         self.assertEqual('Unit testing is a very tedious procedure but is very necessary.', desc)
 
+        # She would then like to add the involvement--the group she was
+        # a part of. from the cv page, she clicks on the add button and goes to the
+        # new involvement form.
         self.browser.get('%s%s' % (self.live_server_url, '/cv/involvement/new/'))
         header = self.browser.find_element_by_tag_name('h2')
         header_text = header.get_attribute('innerHTML')
         self.assertIn('New involvement', header_text)
         self.assertTrue(self.browser.find_element_by_class_name('post-form'))
 
-        # She makes her new post and titles it Unit testing
+        # she fills out all the necessary info
         nameInput = self.browser.find_element_by_id('id_name')
         for i in range(12):
             nameInput.send_keys(Keys.BACKSPACE)
@@ -243,7 +256,8 @@ class OwnerTest(LiveServerTestCase):
             workInput.send_keys(Keys.BACKSPACE)
         workInput.send_keys('march 2020')
 
-        # She then goes down to the submit button and publishes the post
+        # She then goes down to the submit button and saves the involvement to
+        # her blog
         submit = self.browser.find_element_by_tag_name('button')
         self.assertEqual('submit', submit.get_attribute('type'))
         submit.send_keys(Keys.ENTER)  
@@ -329,6 +343,15 @@ class VisitorTest(LiveServerTestCase):
         info = edu.find_element_by_class_name('additional_info').find_elements_by_tag_name('p')
         self.assertEquals('3.6 / 4.0', info[0].get_attribute('innerHTML'))
         self.assertEquals('may 2021', info[1].get_attribute('innerHTML'))
+
+        # Erin scrolls down and notes that there are other sections to the cv. it's currently
+        # empty, so it seems this blog still is a work in progress, but at least the sections
+        # are there.
+
+        self.assertEqual('Experiences.', self.browser.find_elements_by_tag_name('h3')[1].get_attribute('innerHTML'))
+        self.assertEqual('Projects.', self.browser.find_elements_by_tag_name('h3')[2].get_attribute('innerHTML'))
+        self.assertEqual('Skills.', self.browser.find_elements_by_tag_name('h3')[3].get_attribute('innerHTML'))
+        self.assertEqual('Involvement.', self.browser.find_elements_by_tag_name('h3')[4].get_attribute('innerHTML'))
 
 if __name__ == '__main__':  
     unittest.main(warnings='ignore')  
